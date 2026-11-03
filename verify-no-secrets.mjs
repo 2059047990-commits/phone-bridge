@@ -16,6 +16,7 @@ const RULES = [
   ['Windows 用户名', /\b20590\b/],
   ['令牌前缀 ab_/pa_/ts_', /\b(?:ab|pa|ts)_[0-9a-f]{16,}/i],
   ['裸 64 位十六进制串（疑似 token/secret）', /(?<![0-9a-f])[0-9a-f]{64}(?![0-9a-f])/i],
+  ['裸 32 位十六进制串（疑似 token/md5）', /(?<![0-9a-f])[0-9a-f]{32}(?![0-9a-f])/i],
   ['信箱时间戳留痕 ts=1xxxxxx', /\bts=\d{10,}\b/],
   ['F: 盘个人路径', /F:\\/],
   ['C:\\Users 个人路径', /C:\\Users\\/i],
@@ -24,16 +25,14 @@ const RULES = [
 
 // 允许的例外：这些串本身是文档里的占位符或公开范例
 const ALLOW = [
-  'REPLACE_WITH_64_HEX_CHARS',
-  'REPLACE_WITH_RANDOM_TOKEN',
-  'REPLACE_WITH_PHONE_AGENT_TOKEN',
+  'REPLACE_WITH_',
   '100.x.y.z',
   '100.64.0.0/10'
 ]
 
 const TEXT_EXT = new Set([
   '.mjs', '.js', '.cjs', '.json', '.md', '.ps1', '.vbs', '.txt', '.yml', '.yaml',
-  '.gitignore', '', '.example'
+  '.py', '.sh', '.bash', '.gitignore', '', '.example'
 ])
 
 function walk(dir, out = []) {

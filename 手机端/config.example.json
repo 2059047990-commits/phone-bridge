@@ -1,0 +1,6 @@
+{
+  "_说明": "复制成 config.json 后填自己的值。这个文件只在手机侧用，不进版本库。",
+  "pcBase": "http://100.x.y.z:8790",
+  "pcToken": "REPLACE_WITH_PC_TOKEN",
+  "unlockSecret": "REPLACE_WITH_UNLOCK_SECRET"
+}

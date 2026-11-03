@@ -43,8 +43,8 @@ phone-bridge\
 ├─ adb-bridge.mjs              电脑侧 ADB 网关（无线调试转发到本机 8793）
 ├─ adb-config.example.json     ADB 网关示例配置
 ├─ start-adb-bridge.ps1 / install-adb-autostart.ps1
-├─ 手机端\                      下发到 Termux 的手机侧服务源码
-└─ 工具\                       一次性调试脚本（probe-get.mjs / test-mcp.mjs / _yamlcheck.cjs）
+├─ 手机端\                      Termux 侧脚本（phone-agent / mbox-watch / gate / bridge.py / keepalive …）
+└─ 工具\                       一次性调试脚本（probe-get.mjs / test-mcp.mjs）
 ```
 
 ## 三、跑起来
@@ -81,6 +81,44 @@ node server.mjs
 | Header | `Authorization: Bearer <config.json 里的 token>` |
 
 加完**必须再在助手的设置里勾上这个 MCP 服务器**，工具才会出现。
+
+### 4.2 Termux 侧脚本（`手机端\`）
+
+这些跑在手机上，给「电脑反过来指挥手机」和「手机自己盯着电脑」用，不是必装项——只用 RikkaHub 连电脑的话第四节到此为止就够了。
+
+| 文件 | 干什么 |
+|---|---|
+| `phone-agent.mjs` | 手机侧 MCP 服务，监听 `8791`，把 `phone_*` 那 13 个工具暴露给电脑 |
+| `mbox-watch.mjs` | 值守：每分钟戳一次电脑 `/health`，掉了就记一笔；把新留言缓存到本地 |
+| `gate.mjs` | 电脑闸门的手机侧放行器，用 `unlockSecret` 签 HMAC |
+| `unlock.sh` | 触发一次放行（`gate.mjs` 的薄包装） |
+| `bridge.py` | 更早的简易 HTTP 桥（`8787`），只做通知/剪贴板/朗读，可不用 |
+| `keepalive.sh` | 机械值守：三个端口缺了就补、定时任务丢了就补注册、电量/存储异常才提醒、每天 8:00 一份晨报 |
+| `restart-sentinel.sh` | 崩溃即拉起 |
+
+部署：
+
+```bash
+# 1. 所有脚本丢进 Termux 家目录
+cp 手机端/*.mjs 手机端/*.py 手机端/*.sh ~/
+chmod +x ~/*.sh
+
+# 2. 填配置（手机侧自己的，跟电脑端 config.json 不是一个文件）
+cp 手机端/config.example.json ~/config.json
+#   pcBase       = http://<电脑 Tailscale IP>:8790
+#   pcToken      = 电脑端 config.json 里的 token
+#   unlockSecret = 电脑端 config.json 里的 unlockSecret
+
+# 3. 起服务
+nohup node ~/phone-agent.mjs >> ~/phone-agent.log 2>&1 &
+nohup node ~/mbox-watch.mjs  >> ~/mbox-watch.log  2>&1 &
+
+# 4. 注册值守（15 分钟一次，重启后仍在）
+termux-job-scheduler -s ~/keepalive.sh --job-id 1 --period-ms 900000 --persisted true --network any
+```
+
+`phone-agent.mjs` 自己的 token（`pa_` 开头那串）跟电脑端 token 是两套，别混。安卓上想开机自启，把它挂到 `~/.termux/boot/` 下即可。
+
 
 ## 五、电脑端工具（`pc_*`，7 个）
 
