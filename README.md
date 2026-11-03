@@ -70,7 +70,9 @@ node server.mjs
 
 首次启动时若 `config.json` 缺 token，`server.mjs` 会用 `crypto.randomBytes(24)` 生成一个并写回配置，日志里会打出来。
 
-## 四、手机端（RikkaHub）配置
+## 四、手机端
+
+### 4.1 RikkaHub 接入
 
 设置 → MCP → 添加服务器：
 
