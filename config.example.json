@@ -1,0 +1,22 @@
+{
+  "host": "0.0.0.0",
+  "port": 8790,
+  "token": "REPLACE_WITH_64_HEX_CHARS",
+  "bridgeDir": "./bridge",
+  "shellTimeoutMs": 600000,
+  "maxOutputBytes": 1000000,
+  "dshPath": "C:\\DeepSeekHarness\\resources\\runtime\\cli\\bin\\dsh.cmd",
+  "dshExe": "C:\\DeepSeekHarness\\DeepSeek Harness.exe",
+  "dshCli": "C:\\DeepSeekHarness\\resources\\app.asar\\dsh\\node_modules\\@deepseek-ai\\dsh-desktop-host\\lib\\cli.js",
+  "askCwd": "C:\\Users\\YOU\\project",
+  "askTimeoutMs": 300000,
+  "unlockTtlMs": 1800000,
+  "logMaxBytes": 2097152,
+  "logKeep": 3,
+  "allowCidrs": [
+    "127.0.0.1/32",
+    "::1/128",
+    "100.64.0.0/10"
+  ],
+  "unlockSecret": "REPLACE_WITH_64_HEX_CHARS"
+}

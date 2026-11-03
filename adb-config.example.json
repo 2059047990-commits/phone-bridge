@@ -1,0 +1,20 @@
+{
+  "host": "127.0.0.1",
+  "port": 8793,
+  "token": "REPLACE_WITH_RANDOM_TOKEN",
+  "adbPath": "C:\\platform-tools\\adb.exe",
+  "target": "100.x.y.z:5555",
+  "phoneAgent": {
+    "url": "http://100.x.y.z:8791/mcp",
+    "token": "REPLACE_WITH_PHONE_AGENT_TOKEN"
+  },
+  "shotsDir": "./adb-shots",
+  "knownNonAdbPorts": [
+    8082,
+    8787,
+    8791,
+    8792
+  ],
+  "commandTimeoutMs": 120000,
+  "pairedHost": "100.x.y.z"
+}

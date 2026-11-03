@@ -1,0 +1,25 @@
+# 本地真实配置，绝不提交
+config.json
+adb-config.json
+手机端/.phone-token.txt
+
+# 运行期数据（含私人信件与留言，绝不提交）
+bridge/
+备份/
+adb-shots/
+.adb-tmp/
+_tmp/
+
+# 只在本机跑的一次性调试脚本（里面常有硬编码的本机地址）
+_verify/
+
+# 日志与备份
+*.log
+*.log.*
+*.bak-*
+*.prune-*
+
+node_modules/
+npm-debug.log*
+.DS_Store
+Thumbs.db
